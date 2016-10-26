@@ -46,7 +46,7 @@ module Pacto
 
         def handle(options) # rubocop:disable Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
           @options = options
-          config[:backend_host] = options[:backend_host]
+          config[:backend_host] = options[:backend_host] || options[:to]
           config[:strip_port] = options[:strip_port]
           config[:strip_dev] = options[:strip_dev]
           config[:port] = port
@@ -62,6 +62,8 @@ module Pacto
             }
             pacto_config.stenographer_log_file = options[:stenographer_log_file]
           end
+
+          puts "Options: #{options}" if options[:spy]
 
           if options[:generate]
             Pacto.generate!

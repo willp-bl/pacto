@@ -46,6 +46,8 @@ module Pacto
     end
 
     def matches?(request_signature)
+      # FIXME: override the port, as pacto does not store it to use in this comparison
+      request_signature.uri.port = 443
       request_pattern.matches? request_signature
     end
 

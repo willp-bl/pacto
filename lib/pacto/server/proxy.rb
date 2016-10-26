@@ -15,7 +15,8 @@ module Pacto
         host.gsub!('.dev', '.com') if settings[:strip_dev]
         scheme, host = host.split('://')
         host, scheme = scheme, host if host.nil?
-        host, _port = host.split(':')
+        # FIXME: this disables removing the port from the --to host (which we need when running services locally)
+        #host, _port = host.split(':')
         scheme ||= 'https'
         pacto_request.uri = Addressable::URI.heuristic_parse("#{scheme}://#{host}#{pacto_request.uri}")
         # FIXME: We're stripping accept-encoding and transfer-encoding rather than dealing with the encodings
@@ -42,7 +43,7 @@ module Pacto
 
       def host_for(pacto_request)
         # FIXME: Need case insensitive fetch for headers
-        pacto_request.uri.site || pacto_request.headers.find { |key, _| key.downcase == 'host' }[1]
+        settings[:backend_host] || pacto_request.uri.site || pacto_request.headers.find { |key, _| key.downcase == 'host' }[1]
       end
     end
   end

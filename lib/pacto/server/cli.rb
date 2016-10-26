@@ -27,6 +27,8 @@ module Pacto
           method_option :directory, default: DEFAULTS[:directory], desc: 'The directory containing contracts'
           method_option :strict, default: DEFAULTS[:strict], desc: 'Whether Pacto should use strict matching or not'
           method_option :format, default: DEFAULTS[:format], desc: 'The contract format to use'
+          method_option :generate, default: DEFAULTS[:generate], desc: 'Whether or not to generate contracts'
+          method_option :validate, default: DEFAULTS[:validate], desc: 'Whether or not to validate existing contracts'
           method_option :strip_port, default: DEFAULTS[:strip_port], desc: 'If pacto should remove the port from URLs before forwarding'
         end
       end
@@ -46,6 +48,7 @@ module Pacto
       method_option :to, type: :string, desc: 'The target host for forwarded requests'
       method_option :port, type: :numeric, desc: 'The port to listen on', default: 3000
       method_option :spy, type: :boolean, desc: 'Display traffic received by Pacto'
+      server_options
       def proxy(*_contracts)
         setup_interrupt
         server_options = @options.dup

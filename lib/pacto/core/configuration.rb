@@ -4,7 +4,7 @@ module Pacto
     attr_accessor :adapter, :strict_matchers,
                   :contracts_path, :logger, :generator_options,
                   :hide_deprecations, :default_consumer, :default_provider,
-                  :stenographer_log_file, :color, :proxy
+                  :stenographer_log_file, :color, :proxy, :insecure_tls
     attr_reader :hook
 
     def initialize # rubocop:disable Metrics/MethodLength
@@ -21,6 +21,13 @@ module Pacto
       @generator_options = { schema_version: 'draft3' }
       @color = $stdout.tty?
       @proxy = ENV['PACTO_PROXY']
+    end
+
+    def insecure_tls
+      if ENV['PACTO_INSECURE_TLS']
+        return true
+      end
+        false
     end
 
     def logger

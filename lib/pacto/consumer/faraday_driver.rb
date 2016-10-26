@@ -7,6 +7,7 @@ module Pacto
       def execute(req)
         conn_options = { url: req.uri.site }
         conn_options[:proxy] = Pacto.configuration.proxy if Pacto.configuration.proxy
+        conn_options[:ssl] = { verify: false } if Pacto.configuration.insecure_tls
         conn = Faraday.new(conn_options) do |faraday|
           faraday.response :logger if Pacto.configuration.logger.level == :debug
           faraday.adapter Faraday.default_adapter
